@@ -20,6 +20,7 @@ inline bool get_data_attr(const set<short> data, int index) {
     }
 }
 
+
 inline pair<int, int> cal_label(const set<short> (&datas)[DATA_SUM],
     const map<short, bool> &preCondition, const bool *labels) {
     int a_cnt = 0, b_cnt = 0;
@@ -42,6 +43,7 @@ inline pair<int, int> cal_label(const set<short> (&datas)[DATA_SUM],
     }
     return pair<int, int>{a_cnt, b_cnt};
 }
+
 pair<double,int> get_sep_info_entropy(const set<short> (&datas)[DATA_SUM], 
     const map<short, bool> &preCondition, const bool *labels, int sepIndex) {
     //
@@ -136,6 +138,7 @@ int arg_array[ALL_ARG_SUM] = {45, 203, 204, 521, 542, 543, 544, 577, 1594, 1595,
     2084, 2192, 2193, 2198, 2199, 2210, 2211, 2224, 2225, 2228, 2229, 2230, 2231,
     2236, 2237, 9011, 9153, 10171, 10172, 11179, 11223, 11235,
     11236, 11259, 11260, 11262, 11282, 11296, 11297, 11377, 11386, 11390};
+
 Node * make_decision_tree(const set<short> (&datas)[DATA_SUM], const bool *labels) {
     // Generate ARG_SUM different index in range(0, ALL_ARG_SUM)
     set<short> arg_set;
@@ -143,7 +146,7 @@ Node * make_decision_tree(const set<short> (&datas)[DATA_SUM], const bool *label
     //
     srand(time(NULL));
     while(arg_set.size() != ARG_SUM) {
-        rand_index = arg_array[rand() % ALL_ARG_SUM];
+        rand_index = rand() % ALL_ARG_SUM;
         if(arg_set.find(rand_index) == arg_set.end()) {
             arg_set.insert(rand_index);
             cout << "arg_set: " << rand_index << endl;
@@ -165,13 +168,14 @@ Node * make_decision_tree(const set<short> (&datas)[DATA_SUM], const bool *label
     Item top;
     while(stk.size()) {
         top = stk.top();
+        cout << top.node->value << " xx" << endl;
         stk.pop();
         set<short> &avaiIndex = top.avaiIndex;
         if(avaiIndex.size() == 0) {
             // no any more available index. 
             // Set current node as leaf with label which is more than another.
             pair<int, int> cntPair = cal_label(datas, top.preCond, labels);
-            // cout << "0, 1:  " << cntPair.first << " " << cntPair.second << endl;
+            cout << "0, 1:  " << cntPair.first << " " << cntPair.second << endl;
             if(cntPair.first > cntPair.second) {
                 top.node->value = 0;
             } else if(cntPair.first > cntPair.second) {
@@ -232,6 +236,7 @@ inline bool get_predict_label(Node *tree, set<short> data) {
         }
     }
 }
+
 void predict_test_set(set<short> (&test_set)[TEST_SUM],
     pair<int, bool>(&outputs)[TEST_SUM], Node **ptr, int len) {
     for(int i = 0; i < TEST_SUM; ++i) {

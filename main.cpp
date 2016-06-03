@@ -17,11 +17,9 @@ set<short> test_set[TEST_SUM] = {};
 pair<int, bool> outputs[TEST_SUM] = {};
 
 int main() {
-    // make_small_data();
-    // testInfoEntropy();
     cout << "run" << endl;
-    // arg_per();
-    const int TREE_SUM = 1;
+
+    const int TREE_SUM = 100;
     Node * treeArr[TREE_SUM];
     make_data(datas, labels);
     int start = time(0);

@@ -4,6 +4,36 @@
 #include <map>
 using namespace std;
 
+/*
+* statistic arg distribution of train-data
+*/
+
+void arg_per() {
+    ifstream train_ifs("train.txt");
+    string line;
+    int arr[11392+1] = {0};
+    while(getline(train_ifs, line)) {
+        int len = line.length();
+        int left = 0, right = line.find(' ');
+        int index;
+        left = right + 1;
+        while(left < len) {
+            right = line.find(':', left);
+            index = stoi(line.substr(left, right - left));
+            arr[index]++;
+            left = right + 1;
+            right = line.find(' ', left);
+            if(right == string::npos)
+                break;
+            left = right + 1;
+        }
+    }
+    ofstream statis_ofs("arg_per.txt");
+    for(int i = 0; i < 11393; ++i) {
+        statis_ofs << arr[i] << " ";
+    }
+}
+
 void see_per(vector<int> vec) {
 	sort(vec.begin(), vec.end());
 	for(int i = vec.size() -1; i >= 0; --i) {
